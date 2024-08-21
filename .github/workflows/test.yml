@@ -1,0 +1,22 @@
+name: Release Draft Action Test
+
+on:
+  workflow_dispatch:
+  push:
+
+jobs:
+  test-dry-run:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: ./
+        with:
+          dry-run: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  test-releaser:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: ./
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
