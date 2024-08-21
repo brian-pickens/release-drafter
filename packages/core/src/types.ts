@@ -122,6 +122,7 @@ export type ReleaseDrafterConfig = {
 	template: string
 	'version-resolver': VersionResolver
 	'version-template': string
+	'dry-run': boolean
 }
 
 export type ReleaseDrafterGetOptions = GetOptions<

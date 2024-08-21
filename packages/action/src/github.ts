@@ -125,6 +125,7 @@ export function getActionInputs(config: ReleaseDrafterConfig) {
 		tag: core.getInput('tag') || undefined,
 		name: core.getInput('name') || undefined,
 		commitish: core.getInput('commitish') || undefined,
+		dryRun: core.getInput('dry-run') || false
 	}
 }
 
@@ -143,6 +144,7 @@ export async function setActionOutputs(
 	{ body }: { body: string },
 	shouldDraft: boolean,
 	isPreRelease: boolean,
+	dryRun: boolean
 ) {
 	const {
 		data: {
@@ -169,6 +171,10 @@ export async function setActionOutputs(
 		summaryTable.push(['Tag name', tagName])
 	}
 	core.setOutput('body', body)
+
+	if (dryRun){
+		summaryTable.push(['Dry-Run', '✔'])
+	}
 	if (shouldDraft) {
 		core.setOutput('draft', 'true')
 		core.setOutput('published', 'false')

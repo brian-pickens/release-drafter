@@ -40,7 +40,7 @@ export async function run(): Promise<void> {
 	core.info('⏬ Fetching config')
 	const config = await context.config()
 
-	const { isPreRelease, shouldDraft, version, tag, name, commitish } =
+	const { isPreRelease, shouldDraft, version, tag, name, commitish, dryRun } =
 		getActionInputs(config)
 
 	const {
@@ -113,25 +113,27 @@ export async function run(): Promise<void> {
 	})
 
 	let createOrUpdateReleaseResponse
-	if (draftRelease) {
-		core.info(`🔃 Updating existing release ${draftRelease.id}`)
-		createOrUpdateReleaseResponse = await updateRelease({
-			context,
-			releaseInfo,
-			draftRelease,
-		})
-		core.info(
-			`✔ Updated release ${createOrUpdateReleaseResponse.data.html_url}`,
-		)
-	} else {
-		core.info('🆕 Creating new release')
-		createOrUpdateReleaseResponse = await createRelease({
-			context,
-			releaseInfo,
-		})
-		core.info(
-			`✔ Created release ${createOrUpdateReleaseResponse.data.html_url}`,
-		)
+	if (!dryRun) {
+		if (draftRelease) {
+			core.info(`🔃 Updating existing release ${draftRelease.id}`)
+			createOrUpdateReleaseResponse = await updateRelease({
+				context,
+				releaseInfo,
+				draftRelease,
+			})
+			core.info(
+				`✔ Updated release ${createOrUpdateReleaseResponse.data.html_url}`,
+			)
+		} else {
+			core.info('🆕 Creating new release')
+			createOrUpdateReleaseResponse = await createRelease({
+				context,
+				releaseInfo,
+			})
+			core.info(
+				`✔ Created release ${createOrUpdateReleaseResponse.data.html_url}`,
+			)
+		}
 	}
 
 	await setActionOutputs(
@@ -139,5 +141,6 @@ export async function run(): Promise<void> {
 		releaseInfo,
 		shouldDraft,
 		isPreRelease,
+		dryRun
 	)
 }

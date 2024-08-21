@@ -57,6 +57,11 @@ inputs:
       A string that would be added after the template body.
     required: false
     default: ''
+  dry-run:
+    description: |
+      A boolean if true, will not actually publish or draft any release.
+    required: false
+    default: 'false'
 outputs:
   id:
     description: The ID of therelease that was created or updated.
