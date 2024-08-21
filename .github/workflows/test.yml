@@ -8,7 +8,7 @@ jobs:
   test-dry-run:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout
+      - uses: actions/checkout@main
       - uses: ./
         with:
           dry-run: true
@@ -18,7 +18,7 @@ jobs:
   test-releaser:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout
+      - uses: actions/checkout@main
       - uses: ./
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
